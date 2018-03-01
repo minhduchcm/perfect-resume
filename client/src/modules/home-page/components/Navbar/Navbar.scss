@@ -1,0 +1,13 @@
+@import 'styles/variables';
+
+.navbar {
+  flex-grow: 1;
+  padding: 30px;
+  text-align: right;
+
+  .message {
+    color: $white;
+    font-size: 16px;
+    padding: 0 10px;
+  }
+}

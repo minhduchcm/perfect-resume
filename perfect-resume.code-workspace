@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "server"
+		},
+		{
+			"path": "docs"
+		},
+		{
+			"path": "app"
+		}
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true
+	}
+}

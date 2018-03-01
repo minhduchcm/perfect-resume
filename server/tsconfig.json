@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "outDir": "bin",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "removeComments": false,
+    "watch": true,
+    "types": ["node", "mocha", "chai"],
+    "baseUrl": "."
+  },
+  "exclude": ["node_modules", "coverage"]
+}

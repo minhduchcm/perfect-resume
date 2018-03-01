@@ -1,0 +1,19 @@
+@import 'styles/variables';
+@import 'styles/mixins';
+
+.login-page {
+  @include Card;
+  border-radius: $radius-medium;
+
+  max-width: 450px;
+  margin: 0px auto;
+  margin-top: 30px;
+  padding: 20px;
+}
+.back-to-home {
+  text-align: left;
+  color: $blue;
+}
+.cta-link {
+  color: $blue;
+}

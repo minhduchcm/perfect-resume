@@ -1,0 +1,15 @@
+@import 'styles/variables';
+@import 'styles/mixins';
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+
+  .btn-login {
+    padding: 15px 55px;
+    margin-top: 10px;
+  }
+  .error-msg {
+    color: $red;
+  }
+}

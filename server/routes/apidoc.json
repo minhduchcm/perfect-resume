@@ -1,0 +1,9 @@
+{
+  "name": "Perfect Resume",
+  "version": "0.1.0",
+  "title": "Perfect Resume Api",
+  "template": {
+    "withCompare": false,
+    "withGenerator": false
+  }
+}

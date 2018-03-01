@@ -1,0 +1,34 @@
+$white: #fafafa;
+$black: #202020;
+
+$gray-f5: #f5f5f5;
+$gray-e4: #e4e4e4;
+$gray-9b: #ababab;
+$gray-42: #424242;
+
+$red: #f44336;
+$green: #8bc34a;
+$blue: #2196f3;
+$light-blue: #03a9f4;
+
+$primary-colors: (
+  green: $green,
+  blue: $blue,
+  red: $red,
+  light-blue: $light-blue
+);
+
+$radius-small: 3px;
+$radius-medium: 5px;
+
+$link-button-hover-darken: 8%;
+
+$primary: $red;
+
+$headings: (
+  h1: 30px,
+  h2: 25px,
+  h3: 20px,
+  h4: 15px,
+  h5: 12px
+);
