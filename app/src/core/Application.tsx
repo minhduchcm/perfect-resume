@@ -4,15 +4,14 @@ import { combineReducers, Store, Reducer } from 'redux';
 import { EventEmitter } from 'events';
 import { History } from 'history';
 import { Provider } from 'react-redux';
-import { createBrowserHistory } from 'history';
 import { routerReducer } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
 import { ConnectedRouter } from 'react-router-redux';
+import { renderRoutes } from 'react-router-config';
+import { Switch } from 'react-router-dom';
 
 import RootState from './RootState';
-import ConfiguredStore from './ConfiguredStore';
 import Module from './Module';
-import { RouteConfig, renderRoutes } from 'react-router-config';
 
 interface ConstructorParams {
   name: string;
@@ -29,7 +28,8 @@ class Application extends EventEmitter {
 
   private initCallback: InitCallback;
   private readyCallback: ReadyCallback;
-  private modules: Module[] = [];
+
+  private mainModule: Module;
 
   public constructor(params: ConstructorParams) {
     super();
@@ -40,6 +40,9 @@ class Application extends EventEmitter {
       throw new Error(`Node #${params.dom} does not exist!`);
     }
     this.rootEl = rootEl;
+    this.mainModule = new Module({
+      name: 'main',
+    });
   }
 
   public init(initCallback: InitCallback) {
@@ -53,34 +56,28 @@ class Application extends EventEmitter {
   }
 
   public async start() {
+    await this.mainModule.init(this);
+
     if (this.initCallback !== undefined) {
       await this.initCallback(this);
     }
-    this.history = createBrowserHistory();
-    const configuredStore = new ConfiguredStore({
-      reducers: this.getReducers(),
-      history: this.history,
-    });
-    this.store = configuredStore.getReduxStore();
 
     if (this.readyCallback !== undefined) {
       await this.readyCallback(this);
     }
     this.render();
   }
+
   public async render() {
+    const routes = await this.mainModule.getRoutes();
     const dom = (
       <Provider store={this.store}>
         <ConnectedRouter history={this.history}>
-          <React.Fragment>{renderRoutes(this.getRoutes())}</React.Fragment>
+          <Switch>{renderRoutes(routes)}</Switch>
         </ConnectedRouter>
       </Provider>
     );
     ReactDom.render(dom, this.rootEl);
-  }
-
-  public registerModules<T extends Module>(modules: T[]) {
-    this.modules = modules;
   }
 
   public replaceReducers(newReducer: Reducer<RootState>) {
@@ -88,13 +85,19 @@ class Application extends EventEmitter {
     this.render();
   }
 
-  private getRoutes(): RouteConfig[] {
-    const routes: RouteConfig[] = [];
-    return routes.concat(
-      ...this.modules.map(module => module.getRoutes(this)),
-    ) as RouteConfig[];
+  public registerModules(appModules: Module[]) {
+    this.mainModule.registerSubModules(appModules);
   }
-  private getReducers() {
+
+  public async getReducers() {
+    const moduleReducers = await this.mainModule.getReducers();
+    if (moduleReducers !== null) {
+      return combineReducers<RootState>({
+        router: routerReducer,
+        form: formReducer,
+        features: moduleReducers,
+      });
+    }
     return combineReducers<RootState>({
       router: routerReducer,
       form: formReducer,

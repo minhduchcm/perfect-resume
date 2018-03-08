@@ -1,5 +1,2 @@
-// import Module from 'core/Module';
-import HomePageModule from './homePage';
-
-// const features: Module[] = ;
+import HomePageModule from './HomePage';
 export default [HomePageModule];
